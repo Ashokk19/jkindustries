@@ -57,18 +57,19 @@ export default function ContactSection() {
                 </span>
                 <p className="font-body-md text-[var(--color-on-surface)] font-medium">
                   J.K. Industries<br />
-                  Industrial Corridor, Tirupur, Tamil Nadu 641604, India
+                  No 33/2, A.V.P. Road, Anuparpalayam,<br />
+                  Tiruppur, Tamil Nadu, 641652
                 </p>
                 <div className="mt-3 pt-2 bg-[var(--color-surface-container-low)] p-2 border-t border-[var(--color-surface-variant)]">
                   <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
                     OFFICIAL COMMUNICATION:
                   </span>
-                  <span className="font-data-mono text-[var(--color-on-surface)] block">
-                    enquiry@jkindustries-tirupur.com
-                  </span>
-                  <span className="font-data-mono text-[var(--color-on-surface)] block">
-                    +91 (0421) INDUSTRIAL DESK
-                  </span>
+                  <a href="mailto:jkindustries1905@gmail.com" className="font-data-mono text-[var(--color-primary)] hover:underline block">
+                    jkindustries1905@gmail.com
+                  </a>
+                  <a href="tel:+919865238680" className="font-data-mono text-[var(--color-primary)] hover:underline block">
+                    +91 9865238680
+                  </a>
                 </div>
               </div>
 

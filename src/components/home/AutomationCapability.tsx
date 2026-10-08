@@ -77,13 +77,13 @@ export default function AutomationCapability() {
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--spacing-gutter)] bg-[var(--color-surface-container-low)] p-[var(--spacing-md)] border border-[var(--color-surface-variant)]">
               <div>
                 <span className="font-label-badge text-[var(--color-primary)] block uppercase mb-1">
-                  DESIGN BENCHMARK
+                  TECHNICAL SUPPORT
                 </span>
                 <span className="font-headline-sm font-bold text-[var(--color-on-surface)] block">
-                  24/7 Duty Cycle
+                  Always Available Anywhere
                 </span>
                 <span className="font-body-sm text-[var(--color-on-surface-variant)] mt-1 block">
-                  Cast steel side plates reduce harmonic vibration across continuous daily shifts.
+                  Technical support available always anywhere to ensure seamless production and minimal downtime.
                 </span>
               </div>
               <div>

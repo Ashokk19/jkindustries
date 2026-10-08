@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { productService } from '@/services/productService';
 import type { Product } from '@/types/product';
+import jkLogo from '@/assets/JK_Logo.png';
 
 export default function Footer() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -21,7 +22,7 @@ export default function Footer() {
           {/* Company info */}
           <div className="md:col-span-4 flex flex-col">
             <div className="flex items-center gap-3 mb-[var(--spacing-sm)]">
-              <span className="w-2 h-2 bg-[var(--color-primary-container)]" />
+              <img src={jkLogo} alt="J.K. Industries Logo" className="h-10 w-auto object-contain" />
               <span className="font-headline-sm font-bold uppercase tracking-tight text-[var(--color-on-surface)]">
                 J.K. INDUSTRIES
               </span>
@@ -34,13 +35,18 @@ export default function Footer() {
                 Works &amp; Plant Location
               </span>
               <span className="font-body-sm text-[var(--color-on-surface)] font-medium block">
-                Tirupur, Tamil Nadu, 641604, India
+                No 33/2, A.V.P. Road, Anuparpalayam,<br />Tiruppur, Tamil Nadu, 641652, India
               </span>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="font-label-technical text-[var(--color-secondary)]">PLANT STATUS:</span>
-              <span className="font-label-badge text-[var(--color-primary)] bg-[var(--color-surface-container)] px-2 py-0.5 uppercase tracking-wider">
-                OPERATIONAL 08:00-20:00 IST
+            <div className="bg-[var(--color-surface-container-low)] p-[var(--spacing-sm)] border border-[var(--color-surface-variant)] mb-[var(--spacing-sm)]">
+              <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
+                Contact
+              </span>
+              <span className="font-body-sm text-[var(--color-on-surface)] font-medium block">
+                Phone: <a href="tel:+919865238680" className="text-[var(--color-primary)] hover:underline">9865238680</a>
+              </span>
+              <span className="font-body-sm text-[var(--color-on-surface)] font-medium block">
+                Email: <a href="mailto:jkindustries1905@gmail.com" className="text-[var(--color-primary)] hover:underline">jkindustries1905@gmail.com</a>
               </span>
             </div>
           </div>

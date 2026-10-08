@@ -6,7 +6,7 @@ export default function About() {
       {/* Top Banner */}
       <section className="w-full bg-[var(--color-surface-container-lowest)] border-b border-[var(--color-surface-variant)] py-[var(--spacing-xl)]">
         <div className="max-w-7xl mx-auto px-[var(--spacing-gutter)]">
-          <div className="max-w-3xl">
+          <div className="max-w-4xl">
             <div className="flex items-center gap-2 mb-2">
               <span className="w-2 h-2 bg-[var(--color-primary-container)]" />
               <span className="font-label-technical text-[var(--color-primary)] uppercase tracking-widest">
@@ -16,9 +16,41 @@ export default function About() {
             <h1 className="font-headline-lg-mobile md:font-headline-lg font-bold text-[var(--color-on-surface)] tracking-tight uppercase">
               Practical Engineering for Heavy-Duty Production.
             </h1>
-            <p className="font-body-lg text-[var(--color-on-surface-variant)] mt-4">
-              J.K. Industries is an industrial equipment manufacturer rooted in Tirupur, Tamil Nadu — the textile and apparel capital of South India. We design and fabricate printing, cutting, counting, and winding machinery that withstands multi-shift factory demands.
-            </p>
+            
+            <div className="mt-6 space-y-4">
+              <p className="font-body-lg text-[var(--color-on-surface-variant)] leading-relaxed">
+                J.K. Industries is an industrial equipment manufacturer rooted in Tirupur, Tamil Nadu — the textile and apparel capital of South India. With{' '}
+                <strong className="font-semibold text-[var(--color-on-surface)]">
+                  25+ years of expertise in industrial machinery manufacturing
+                </strong>
+                , we specialize in designing and fabricating reliable printing, cutting, counting, and winding machines built to withstand demanding multi-shift factory operations.
+              </p>
+
+              <p className="font-body-md md:font-body-lg text-[var(--color-on-surface-variant)] leading-relaxed">
+                Our experience spans decades of working closely with manufacturers and understanding the practical challenges of industrial production. We focus on delivering machines that combine{' '}
+                <strong className="font-semibold text-[var(--color-on-surface)]">
+                  robust construction, consistent performance, ease of operation, and long-term reliability
+                </strong>
+                .
+              </p>
+
+              <p className="font-body-md md:font-body-lg text-[var(--color-on-surface-variant)] leading-relaxed">
+                From conventional machinery to customized solutions, we develop equipment with a strong emphasis on{' '}
+                <strong className="font-semibold text-[var(--color-on-surface)]">
+                  precision engineering, durability, and practical factory requirements
+                </strong>
+                . Our goal is simple — to provide dependable machinery that helps businesses improve productivity while minimizing downtime and maintenance.
+              </p>
+
+              <div className="mt-6 p-4 md:p-5 bg-[var(--color-surface-container-low)] border-l-4 border-[var(--color-primary)]">
+                <p className="font-body-md md:font-body-lg text-[var(--color-on-surface-variant)] leading-relaxed">
+                  With a strong manufacturing foundation in Tirupur and a commitment to continuous improvement,{' '}
+                  <strong className="font-semibold text-[var(--color-on-surface)]">
+                    J.K. Industries continues to build industrial machines designed for real-world production environments.
+                  </strong>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

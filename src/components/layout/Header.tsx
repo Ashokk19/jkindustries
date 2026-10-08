@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/hooks/useAuth';
 import LoginModal from '@/components/ui/LoginModal';
+import jkLogo from '@/assets/JK_Logo.png';
 
 const navLinks = [
   { path: '/', label: 'Home' },
@@ -57,7 +58,12 @@ export default function Header() {
         {/* Main navigation bar */}
         <div className="h-20 max-w-7xl mx-auto px-[var(--spacing-gutter)] flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-4">
+          <Link to="/" className="flex items-center gap-3">
+            <img
+              src={jkLogo}
+              alt="J.K. Industries Logo"
+              className="h-12 w-auto object-contain"
+            />
             <div className="flex flex-col">
               <span className="font-headline-sm font-bold tracking-tight text-[var(--color-on-surface)] uppercase leading-none">
                 J.K. INDUSTRIES
