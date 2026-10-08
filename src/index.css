@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+/* ========================================================================
+   J.K. INDUSTRIES — PRECISION ENGINEERING SYSTEM
+   Design tokens ported from Stitch project (ID: 6971418860740925852)
+   ======================================================================== */
+
+@theme {
+  /* ── Color Tokens (Material Design 3 surface system) ── */
+  --color-primary: #006a64;
+  --color-primary-container: #38b7ad;
+  --color-primary-fixed: #80f6eb;
+  --color-primary-fixed-dim: #61d9ce;
+  --color-on-primary: #ffffff;
+  --color-on-primary-container: #00433f;
+  --color-on-primary-fixed: #00201e;
+  --color-on-primary-fixed-variant: #00504b;
+  --color-inverse-primary: #61d9ce;
+
+  --color-secondary: #556160;
+  --color-secondary-container: #d6e2e1;
+  --color-secondary-fixed: #d9e5e4;
+  --color-secondary-fixed-dim: #bdc9c8;
+  --color-on-secondary: #ffffff;
+  --color-on-secondary-container: #596565;
+  --color-on-secondary-fixed: #121d1d;
+  --color-on-secondary-fixed-variant: #3d4949;
+
+  --color-tertiary: #546161;
+  --color-tertiary-container: #9aa8a8;
+  --color-tertiary-fixed: #d7e5e5;
+  --color-tertiary-fixed-dim: #bcc9c9;
+  --color-on-tertiary: #ffffff;
+  --color-on-tertiary-container: #313d3d;
+  --color-on-tertiary-fixed: #111e1e;
+  --color-on-tertiary-fixed-variant: #3c4949;
+
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+
+  --color-background: #f7fafa;
+  --color-on-background: #181c1d;
+  --color-surface: #f7fafa;
+  --color-surface-bright: #f7fafa;
+  --color-surface-dim: #d7dbdb;
+  --color-surface-tint: #006a64;
+  --color-surface-variant: #e0e3e3;
+  --color-surface-container: #ebeeee;
+  --color-surface-container-low: #f1f4f4;
+  --color-surface-container-high: #e6e9e9;
+  --color-surface-container-highest: #e0e3e3;
+  --color-surface-container-lowest: #ffffff;
+  --color-on-surface: #181c1d;
+  --color-on-surface-variant: #3d4947;
+
+  --color-outline: #6d7a78;
+  --color-outline-variant: #bcc9c7;
+  --color-inverse-surface: #2d3131;
+  --color-inverse-on-surface: #eef1f1;
+
+  /* ── Typography Scale ── */
+  --font-display: "Manrope", sans-serif;
+  --font-headline: "Manrope", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  /* ── Spacing ── */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2.5rem;
+  --spacing-gutter: 1.5rem;
+  --spacing-gutter-mobile: 1rem;
+  --spacing-margin: 3rem;
+  --spacing-margin-mobile: 1.25rem;
+}
+
+/* ── Base Resets ── */
+@layer base {
+  html, body {
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    overscroll-behavior: none;
+    background-color: var(--color-background);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 24px;
+    color: var(--color-on-surface);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: var(--color-primary-container);
+    color: var(--color-on-primary-container);
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--color-surface-container-low);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-outline-variant);
+  }
+
+  /* Sharp corners globally — Precision Engineering System */
+  *, *::before, *::after {
+    border-radius: 0 !important;
+  }
+
+  /* Exception: only the admin user avatar gets rounded */
+  .avatar-circle {
+    border-radius: 9999px !important;
+  }
+}
+
+/* ── Modal Animations ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ── Typography Utility Classes (from Stitch design) ── */
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    font-size: 56px;
+    line-height: 64px;
+    letter-spacing: -0.03em;
+    font-weight: 700;
+  }
+
+  .font-display-mobile {
+    font-family: var(--font-display);
+    font-size: 36px;
+    line-height: 44px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .font-headline-lg {
+    font-family: var(--font-headline);
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: -0.02em;
+    font-weight: 700;
+  }
+
+  .font-headline-lg-mobile {
+    font-family: var(--font-headline);
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+
+  .font-headline-md {
+    font-family: var(--font-headline);
+    font-size: 28px;
+    line-height: 36px;
+    letter-spacing: -0.01em;
+    font-weight: 600;
+  }
+
+  .font-headline-sm {
+    font-family: var(--font-headline);
+    font-size: 20px;
+    line-height: 28px;
+    letter-spacing: 0em;
+    font-weight: 600;
+  }
+
+  .font-body-lg {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 28px;
+    letter-spacing: -0.01em;
+    font-weight: 400;
+  }
+
+  .font-body-md {
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 24px;
+    letter-spacing: 0em;
+    font-weight: 400;
+  }
+
+  .font-body-sm {
+    font-family: var(--font-body);
+    font-size: 13px;
+    line-height: 20px;
+    letter-spacing: 0em;
+    font-weight: 400;
+  }
+
+  .font-label-technical {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    line-height: 16px;
+    letter-spacing: 0.06em;
+    font-weight: 500;
+  }
+
+  .font-label-badge {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 14px;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+  }
+
+  .font-data-mono {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    line-height: 20px;
+    letter-spacing: 0em;
+    font-weight: 500;
+  }
+}

@@ -1,0 +1,289 @@
+import { useState, useEffect, type FormEvent } from 'react';
+import { productService } from '@/services/productService';
+import type { Product } from '@/types/product';
+
+export default function ContactSection() {
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    productService.getProducts().then(setProducts);
+  }, []);
+
+  const automatic = products.filter((p) => p.category === 'automatic');
+  const manual = products.filter((p) => p.category === 'manual');
+
+  const [submitted, setSubmitted] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    company: '',
+    phone: '',
+    email: '',
+    machine: '',
+    notes: '',
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    // In production, this can send to Supabase or email endpoint
+  };
+
+  return (
+    <section className="w-full bg-[var(--color-background)] py-[var(--spacing-xl)]" id="quote-section">
+      <div className="max-w-7xl mx-auto px-[var(--spacing-gutter)]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-[var(--spacing-gutter)]">
+          {/* Left Column: Context & Works Info */}
+          <div className="lg:col-span-5 flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <span className="font-label-badge text-[var(--color-on-primary-container)] bg-[var(--color-primary-container)] px-2 py-0.5 uppercase">
+                  ENGINEERING CELL
+                </span>
+                <span className="font-label-technical text-[var(--color-secondary)] uppercase">
+                  DIRECT ESTIMATION
+                </span>
+              </div>
+              <h2 className="font-headline-lg-mobile lg:font-headline-lg font-bold text-[var(--color-on-surface)] uppercase tracking-tight mb-[var(--spacing-sm)]">
+                Looking for a Specific Machine?
+              </h2>
+              <p className="font-body-lg text-[var(--color-on-surface-variant)] mb-[var(--spacing-lg)]">
+                Tell us about your production requirement and our team can help identify the appropriate machine for your application.
+              </p>
+
+              {/* Practical Plant Data Box */}
+              <div className="bg-[var(--color-surface-container-lowest)] p-[var(--spacing-md)] border border-[var(--color-surface-variant)] shadow-sm mb-[var(--spacing-md)]">
+                <span className="font-label-technical text-[var(--color-primary)] uppercase font-bold block mb-1">
+                  MANUFACTURING FACILITY &amp; WORKS
+                </span>
+                <p className="font-body-md text-[var(--color-on-surface)] font-medium">
+                  J.K. Industries<br />
+                  Industrial Corridor, Tirupur, Tamil Nadu 641604, India
+                </p>
+                <div className="mt-3 pt-2 bg-[var(--color-surface-container-low)] p-2 border-t border-[var(--color-surface-variant)]">
+                  <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
+                    OFFICIAL COMMUNICATION:
+                  </span>
+                  <span className="font-data-mono text-[var(--color-on-surface)] block">
+                    enquiry@jkindustries-tirupur.com
+                  </span>
+                  <span className="font-data-mono text-[var(--color-on-surface)] block">
+                    +91 (0421) INDUSTRIAL DESK
+                  </span>
+                </div>
+              </div>
+
+              <div className="bg-[var(--color-surface-container-low)] p-[var(--spacing-sm)] border border-[var(--color-surface-variant)]">
+                <span className="font-label-technical text-[var(--color-secondary)] uppercase block mb-1">
+                  COMMISSIONING POLICY:
+                </span>
+                <p className="font-body-sm text-[var(--color-on-surface-variant)]">
+                  Every machine trial is conducted with the client's actual production substrate (tape, satin roll, or hangtag paper) prior to dispatch.
+                </p>
+              </div>
+            </div>
+
+            <div className="pt-6 hidden lg:block">
+              <span className="font-label-badge text-[var(--color-secondary)] uppercase">
+                // J.K. INDUSTRIES TECHNICAL SALES // TIRUPUR DIVISION
+              </span>
+            </div>
+          </div>
+
+          {/* Right Column: Practical Enquiry Form */}
+          <div className="lg:col-span-7 bg-[var(--color-surface-container-lowest)] p-[var(--spacing-md)] md:p-[var(--spacing-lg)] border border-[var(--color-surface-variant)] shadow-sm">
+            <form onSubmit={handleSubmit} className="flex flex-col space-y-[var(--spacing-md)]">
+              <div className="flex items-center justify-between pb-2 bg-[var(--color-surface-container-low)] p-2 border-b border-[var(--color-surface-variant)]">
+                <span className="font-headline-sm font-bold uppercase text-[var(--color-on-surface)]">
+                  MACHINERY ENQUIRY SPECIFICATION
+                </span>
+                <span className="font-label-technical text-[var(--color-secondary)] uppercase">
+                  [FORM RFQ-2025]
+                </span>
+              </div>
+
+              {/* Name and Company Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--spacing-md)]">
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-1">
+                    <label
+                      htmlFor="rfq-name"
+                      className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                    >
+                      Contact Person *
+                    </label>
+                    <span className="font-label-technical text-[var(--color-secondary)]">[INP-01]</span>
+                  </div>
+                  <input
+                    id="rfq-name"
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="e.g. S. Ramanathan"
+                    className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-1">
+                    <label
+                      htmlFor="rfq-company"
+                      className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                    >
+                      Company / Mill Name *
+                    </label>
+                    <span className="font-label-technical text-[var(--color-secondary)]">[INP-02]</span>
+                  </div>
+                  <input
+                    id="rfq-company"
+                    type="text"
+                    required
+                    value={formData.company}
+                    onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                    placeholder="e.g. Apex Apparel Trims Ltd"
+                    className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                  />
+                </div>
+              </div>
+
+              {/* Phone and Email Row */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-[var(--spacing-md)]">
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-1">
+                    <label
+                      htmlFor="rfq-phone"
+                      className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                    >
+                      Phone Number (with Code) *
+                    </label>
+                    <span className="font-label-technical text-[var(--color-secondary)]">[INP-03]</span>
+                  </div>
+                  <input
+                    id="rfq-phone"
+                    type="tel"
+                    required
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+91 98420 XXXXX"
+                    className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                  />
+                </div>
+
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-1">
+                    <label
+                      htmlFor="rfq-email"
+                      className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                    >
+                      Email Address *
+                    </label>
+                    <span className="font-label-technical text-[var(--color-secondary)]">[INP-04]</span>
+                  </div>
+                  <input
+                    id="rfq-email"
+                    type="email"
+                    required
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="procurement@company.com"
+                    className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                  />
+                </div>
+              </div>
+
+              {/* Machine Selector */}
+              <div className="flex flex-col">
+                <div className="flex justify-between items-center mb-1">
+                  <label
+                    htmlFor="rfq-machine"
+                    className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                  >
+                    Machine Model / Production Requirement *
+                  </label>
+                  <span className="font-label-technical text-[var(--color-secondary)]">[SEL-05]</span>
+                </div>
+                <select
+                  id="rfq-machine"
+                  required
+                  value={formData.machine}
+                  onChange={(e) => setFormData({ ...formData, machine: e.target.value })}
+                  className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                >
+                  <option value="" disabled>-- Select Industrial Machine Configuration --</option>
+                  <optgroup label="Automatic Machines">
+                    {automatic.map((p) => (
+                      <option key={p.id} value={p.slug}>
+                        {p.name} ({p.badge || 'Automated'})
+                      </option>
+                    ))}
+                  </optgroup>
+                  <optgroup label="Manual &amp; Converting Units">
+                    {manual.map((p) => (
+                      <option key={p.id} value={p.slug}>
+                        {p.name}
+                      </option>
+                    ))}
+                  </optgroup>
+                </select>
+              </div>
+
+              {/* Notes */}
+              <div className="flex flex-col">
+                <div className="flex justify-between items-center mb-1">
+                  <label
+                    htmlFor="rfq-notes"
+                    className="font-label-technical uppercase text-[var(--color-on-surface)] font-semibold"
+                  >
+                    Substrate Details &amp; Production Speed Target
+                  </label>
+                  <span className="font-label-technical text-[var(--color-secondary)]">[TXT-06]</span>
+                </div>
+                <textarea
+                  id="rfq-notes"
+                  rows={4}
+                  value={formData.notes}
+                  onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder="Specify ribbon/label width, daily cycle requirement (pieces/shift), preferred drying arrangement, or special tooling specifications..."
+                  className="w-full px-3 py-2.5 bg-[var(--color-surface-container-lowest)] text-[var(--color-on-surface)] font-body-md border-l-2 border-[var(--color-primary-container)] border-t border-r border-b border-[var(--color-surface-variant)] focus:outline-none focus:bg-[var(--color-surface-container-low)]"
+                />
+              </div>
+
+              {/* Action Button */}
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <button
+                  type="submit"
+                  className="w-full sm:w-auto relative inline-flex items-center justify-center pl-6 pr-8 py-3.5 bg-[var(--color-inverse-surface)] hover:bg-[var(--color-primary)] text-[var(--color-on-primary)] font-body-md font-semibold tracking-wider uppercase transition-colors border-l-4 border-[var(--color-primary-container)]"
+                >
+                  <span className="material-symbols-outlined mr-2 text-[var(--color-primary-container)] text-[20px]">
+                    send
+                  </span>
+                  Request a Quote
+                </button>
+                <span className="font-label-technical text-[var(--color-secondary)] uppercase text-center sm:text-right">
+                  RESPONSE FROM TIRUPUR WORKS WITHIN 24 HOURS
+                </span>
+              </div>
+
+              {/* Confirmation message */}
+              {submitted && (
+                <div className="p-4 bg-[var(--color-surface-container-low)] border border-[var(--color-primary)] text-[var(--color-on-surface)] mt-3">
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-[var(--color-primary)] text-[24px]">
+                      check_circle
+                    </span>
+                    <span className="font-label-badge text-[var(--color-primary)] uppercase font-bold">
+                      SPECIFICATION RECEIVED // REFERENCE #JKI-REQ-OK
+                    </span>
+                  </div>
+                  <p className="font-body-sm text-[var(--color-on-surface-variant)] mt-1.5">
+                    Our mechanical engineering and estimating department in Tirupur will review your substrate parameters and follow up promptly.
+                  </p>
+                </div>
+              )}
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
