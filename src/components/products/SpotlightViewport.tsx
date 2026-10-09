@@ -43,17 +43,7 @@ export default function SpotlightViewport({ product }: SpotlightViewportProps) {
                   imgClassName="w-full h-full object-contain p-4 transition-transform duration-300"
                 />
 
-                {/* Engineering Schematics Floating Callout */}
-                {product.highlightText && (
-                  <div className="absolute bottom-4 left-4 z-10 w-[calc(100%-2rem)] sm:w-80 max-w-sm bg-white/95 backdrop-blur-md border border-[var(--color-surface-variant)] border-l-4 border-l-[var(--color-primary-container)] p-3.5 shadow-md">
-                    <span className="font-label-technical text-[var(--color-secondary)] uppercase block mb-1">
-                      ENGINEERING BENCHMARK
-                    </span>
-                    <span className="font-body-sm font-semibold text-[var(--color-on-surface)] block">
-                      {product.highlightText}
-                    </span>
-                  </div>
-                )}
+
               </div>
 
               {/* Viewport Footnote */}

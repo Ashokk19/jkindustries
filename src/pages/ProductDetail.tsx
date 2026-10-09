@@ -296,29 +296,7 @@ function ProductDetailContent({ initialProduct }: { initialProduct: Product }) {
                     className="w-full h-full bg-white"
                     imgClassName="w-full h-full object-contain p-4"
                   />
-                  {(product.highlightText || isAdmin) && (
-                    <div className="absolute bottom-4 left-4 z-10 bg-white border border-[var(--color-surface-variant)] border-l-4 border-l-[var(--color-primary-container)] p-3.5 shadow-md" style={{ width: 'calc(100% - 2rem)', maxWidth: '22rem' }}>
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="font-label-technical text-[var(--color-secondary)] uppercase">
-                          ENGINEERING BENCHMARK
-                        </span>
-                        {isAdmin && (
-                          <span className="font-label-badge text-[var(--color-primary)] text-[10px] uppercase ml-2 shrink-0">
 
-                          </span>
-                        )}
-                      </div>
-                      <InlineEdit
-                        value={product.highlightText || ''}
-                        onChange={(v) => updateField('highlightText', v)}
-                        isAdmin={isAdmin}
-                        as="textarea"
-                        rows={2}
-                        className="font-body-sm font-semibold text-[var(--color-on-surface)]"
-                        placeholder="Engineering benchmark highlight..."
-                      />
-                    </div>
-                  )}
                 </div>
 
                 {/* Gallery thumbnails if available */}

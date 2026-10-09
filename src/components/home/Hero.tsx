@@ -100,17 +100,7 @@ export default function Hero() {
                     </span>
                   </div>
                 )}
-                {/* Engineering benchmark callout overlay - matches Product Page */}
-                {featuredProduct && (featuredProduct.highlightText || featuredProduct.technicalHighlight) && (
-                  <div className="absolute bottom-4 left-4 z-10 w-[calc(100%-2rem)] max-w-[22rem] bg-white/95 backdrop-blur-md border border-[var(--color-surface-variant)] border-l-4 border-l-[var(--color-primary-container)] p-3.5 shadow-md">
-                    <span className="font-label-technical text-[var(--color-secondary)] uppercase block mb-1">
-                      ENGINEERING BENCHMARK
-                    </span>
-                    <span className="font-body-sm font-semibold text-[var(--color-on-surface)] block">
-                      {featuredProduct.highlightText || featuredProduct.technicalHighlight}
-                    </span>
-                  </div>
-                )}
+
               </div>
               {/* Bottom spec strip - mirrors Product Page Technical Architecture Matrix */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mt-2 bg-[var(--color-surface-container)] p-3">
