@@ -7,7 +7,7 @@ export default function ProtectedRoute() {
   if (loading) {
     return (
       <div className="w-full min-h-[70vh] flex flex-col items-center justify-center bg-[var(--color-background)]">
-        <div className="p-8 bg-[var(--color-surface-container-lowest)] border border-[var(--color-surface-variant)] flex flex-col items-center text-center max-w-sm">
+        <div className="p-8 bg-[var(--color-surface-container-lowest)] border border-[var(--color-surface-variant)] flex flex-col items-center text-center max-w-[24rem]">
           <span className="material-symbols-outlined text-[40px] text-[var(--color-primary)] animate-spin mb-3">
             progress_activity
           </span>

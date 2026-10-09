@@ -27,8 +27,8 @@ export default function Footer() {
                 J.K. INDUSTRIES
               </span>
             </div>
-            <p className="font-body-sm text-[var(--color-on-surface-variant)] mb-[var(--spacing-md)] max-w-sm">
-              Heavy-duty printing, converting, and industrial label finishing apparatus engineered for high duty-cycle production.
+            <p className="font-body-sm text-[var(--color-on-surface-variant)] mb-[var(--spacing-md)]">
+              Precision-engineered machinery for printing, cutting, counting, and winding applications.
             </p>
             <div className="bg-[var(--color-surface-container-low)] p-[var(--spacing-sm)] border border-[var(--color-surface-variant)] mb-[var(--spacing-sm)]">
               <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
