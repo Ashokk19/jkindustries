@@ -1,18 +1,19 @@
 import { useState, useEffect, type FormEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { productService } from '@/services/productService';
 import type { Product } from '@/types/product';
 
 export default function ContactSection() {
+  const [searchParams] = useSearchParams();
+  const machineParam = searchParams.get('machine');
+
   const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    productService.getProducts().then(setProducts);
-  }, []);
-
-  const automatic = products.filter((p) => p.category === 'automatic');
-  const manual = products.filter((p) => p.category === 'manual');
-
   const [submitted, setSubmitted] = useState(false);
+  const [submissionRef, setSubmissionRef] = useState('JKI-REQ-OK');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [honeypot, setHoneypot] = useState('');
+
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -22,10 +23,70 @@ export default function ContactSection() {
     notes: '',
   });
 
-  const handleSubmit = (e: FormEvent) => {
+  useEffect(() => {
+    productService.getProducts().then(setProducts);
+  }, []);
+
+  // Pre-select machine if specified in URL query params
+  useEffect(() => {
+    if (machineParam && !formData.machine) {
+      setFormData((prev) => ({ ...prev, machine: machineParam }));
+    }
+  }, [machineParam]);
+
+  const automatic = products.filter((p) => p.category === 'automatic');
+  const manual = products.filter((p) => p.category === 'manual');
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
-    // In production, this can send to Supabase or email endpoint
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmitError(null);
+
+    const selectedProduct = products.find((p) => p.slug === formData.machine);
+    const machineName = selectedProduct ? selectedProduct.name : formData.machine;
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          machineName,
+          _gotcha: honeypot,
+        }),
+      });
+
+      const result = await response.json().catch(() => null);
+
+      if (!response.ok || !result?.success) {
+        throw new Error(
+          result?.error || 'Unable to submit specification. Please verify your details or contact us directly.'
+        );
+      }
+
+      setSubmitted(true);
+      setSubmissionRef(
+        result.id ? `JKI-${String(result.id).slice(0, 8).toUpperCase()}` : 'JKI-REQ-OK'
+      );
+      setFormData({
+        name: '',
+        company: '',
+        phone: '',
+        email: '',
+        machine: '',
+        notes: '',
+      });
+    } catch (err: unknown) {
+      console.error('[Quotation Submit Error]', err);
+      const msg = err instanceof Error ? err.message : 'Network error occurred while submitting quotation.';
+      setSubmitError(msg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -249,32 +310,90 @@ export default function ContactSection() {
                 />
               </div>
 
+              {/* Bot protection honeypot */}
+              <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
+                <label htmlFor="rfq-gotcha">Do not fill this field</label>
+                <input
+                  id="rfq-gotcha"
+                  type="text"
+                  name="_gotcha"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={honeypot}
+                  onChange={(e) => setHoneypot(e.target.value)}
+                />
+              </div>
+
               {/* Action Button */}
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <button
                   type="submit"
-                  className="w-full sm:w-auto relative inline-flex items-center justify-center pl-6 pr-8 py-3.5 bg-[var(--color-inverse-surface)] hover:bg-[var(--color-primary)] text-[var(--color-on-primary)] font-body-md font-semibold tracking-wider uppercase transition-colors border-l-4 border-[var(--color-primary-container)]"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto relative inline-flex items-center justify-center pl-6 pr-8 py-3.5 bg-[var(--color-inverse-surface)] hover:bg-[var(--color-primary)] disabled:opacity-60 disabled:cursor-not-allowed text-[var(--color-on-primary)] font-body-md font-semibold tracking-wider uppercase transition-colors border-l-4 border-[var(--color-primary-container)]"
                 >
-                  <span className="material-symbols-outlined mr-2 text-[var(--color-primary-container)] text-[20px]">
-                    send
-                  </span>
-                  Request a Quote
+                  {isSubmitting ? (
+                    <>
+                      <span className="material-symbols-outlined mr-2 text-[var(--color-primary-container)] text-[20px] animate-spin">
+                        progress_activity
+                      </span>
+                      Transmitting Specification...
+                    </>
+                  ) : (
+                    <>
+                      <span className="material-symbols-outlined mr-2 text-[var(--color-primary-container)] text-[20px]">
+                        send
+                      </span>
+                      Request a Quote
+                    </>
+                  )}
                 </button>
                 <span className="font-label-technical text-[var(--color-secondary)] uppercase text-center sm:text-right">
                   RESPONSE FROM TIRUPUR WORKS WITHIN 24 HOURS
                 </span>
               </div>
 
+              {/* Error Alert */}
+              {submitError && (
+                <div
+                  role="alert"
+                  className="p-4 bg-red-950/20 border border-red-500/50 text-[var(--color-on-surface)] mt-3"
+                >
+                  <div className="flex items-center gap-2">
+                    <span className="material-symbols-outlined text-red-500 text-[24px]">
+                      error
+                    </span>
+                    <span className="font-label-badge text-red-400 uppercase font-bold">
+                      TRANSMISSION ERROR // VERIFY DETAILS
+                    </span>
+                  </div>
+                  <p className="font-body-sm text-[var(--color-on-surface-variant)] mt-1.5">
+                    {submitError}
+                  </p>
+                </div>
+              )}
+
               {/* Confirmation message */}
               {submitted && (
-                <div className="p-4 bg-[var(--color-surface-container-low)] border border-[var(--color-primary)] text-[var(--color-on-surface)] mt-3">
-                  <div className="flex items-center gap-2">
-                    <span className="material-symbols-outlined text-[var(--color-primary)] text-[24px]">
-                      check_circle
-                    </span>
-                    <span className="font-label-badge text-[var(--color-primary)] uppercase font-bold">
-                      SPECIFICATION RECEIVED // REFERENCE #JKI-REQ-OK
-                    </span>
+                <div
+                  role="status"
+                  className="p-4 bg-[var(--color-surface-container-low)] border border-[var(--color-primary)] text-[var(--color-on-surface)] mt-3"
+                >
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="material-symbols-outlined text-[var(--color-primary)] text-[24px]">
+                        check_circle
+                      </span>
+                      <span className="font-label-badge text-[var(--color-primary)] uppercase font-bold">
+                        SPECIFICATION RECEIVED // REFERENCE #{submissionRef}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setSubmitted(false)}
+                      className="font-label-technical text-xs text-[var(--color-primary)] hover:underline uppercase cursor-pointer"
+                    >
+                      [+ Submit Another Enquiry]
+                    </button>
                   </div>
                   <p className="font-body-sm text-[var(--color-on-surface-variant)] mt-1.5">
                     Our mechanical engineering and estimating department in Tirupur will review your substrate parameters and follow up promptly.

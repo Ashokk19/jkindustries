@@ -440,7 +440,7 @@ function ProductDetailContent({ initialProduct }: { initialProduct: Product }) {
                 {/* CTAs */}
                 <div className="pt-[var(--spacing-lg)] border-t border-[var(--color-surface-variant)] flex flex-col sm:flex-row gap-3">
                   <Link
-                    to="/contact"
+                    to={`/contact?machine=${product.slug}`}
                     className="flex-1 inline-flex items-center justify-center px-4 py-3.5 bg-[var(--color-inverse-surface)] hover:bg-[var(--color-primary)] text-[var(--color-on-primary)] font-body-sm font-semibold tracking-wider uppercase border-l-4 border-[var(--color-primary-container)] transition-colors"
                   >
                     <span className="font-data-mono mr-2">[RFQ]</span> Request Quote for this Machine
