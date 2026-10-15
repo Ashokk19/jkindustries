@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Product } from '@/types/product';
-import MachineImage from '@/components/ui/MachineImage';
+import ProductMediaViewer from '@/components/products/ProductMediaViewer';
 
 interface SpotlightViewportProps {
   product: Product;
@@ -34,28 +34,13 @@ export default function SpotlightViewport({ product }: SpotlightViewportProps) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12">
-            {/* Machine Image Frame */}
-            <div className="lg:col-span-7 bg-[var(--color-surface-container)] border-b lg:border-b-0 lg:border-r border-[var(--color-surface-variant)] relative flex flex-col justify-between p-[var(--spacing-md)]">
-              <div className="relative w-full h-[360px] md:h-[460px] bg-white border border-[var(--color-surface-variant)] overflow-hidden">
-                <MachineImage
-                  product={product}
-                  className="w-full h-full bg-white"
-                  imgClassName="w-full h-full object-contain p-4 transition-transform duration-300"
-                />
-
-
-              </div>
-
-              {/* Viewport Footnote */}
-              <div className="flex items-center justify-between pt-[var(--spacing-sm)]">
-                <span className="font-label-technical text-[var(--color-secondary)] uppercase tracking-wider">
-                  RIGID CAST-IRON MONOBLOCK CHASSIS
-                </span>
-                <span className="font-label-technical text-[var(--color-primary)] uppercase">
-                  FULL FACTORY VERIFIED
-                </span>
-              </div>
-            </div>
+            {/* Machine Media Frame (Video + Thumbnails) */}
+            <ProductMediaViewer
+              product={product}
+              viewportHeightClass="h-[360px] md:h-[460px]"
+              footnoteLeft="RIGID CAST-IRON MONOBLOCK CHASSIS"
+              footnoteRight="FULL FACTORY VERIFIED"
+            />
 
             {/* Technical Spec Sheet Panel */}
             <div className="lg:col-span-5 p-[var(--spacing-lg)] flex flex-col justify-between bg-[var(--color-surface-container-lowest)]">

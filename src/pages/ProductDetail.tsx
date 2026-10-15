@@ -3,10 +3,9 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { productService } from '@/services/productService';
 import { useAuth } from '@/hooks/useAuth';
 import { useDebouncedSave } from '@/hooks/useDebouncedSave';
-import MachineImage from '@/components/ui/MachineImage';
 import MachineCard from '@/components/products/MachineCard';
 import InlineEdit from '@/components/ui/InlineEdit';
-import { getMachineGallery } from '@/utils/imageResolver';
+import ProductMediaViewer from '@/components/products/ProductMediaViewer';
 import type { Product } from '@/types/product';
 
 /* ──────────────────────────────────────────────────────────────
@@ -185,7 +184,6 @@ function ProductDetailContent({ initialProduct }: { initialProduct: Product }) {
     });
   };
 
-  const galleryImages = getMachineGallery(product.category, product.slug);
 
   return (
     <div className="w-full">
@@ -288,44 +286,13 @@ function ProductDetailContent({ initialProduct }: { initialProduct: Product }) {
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-12">
-              {/* Product Imagery */}
-              <div className="lg:col-span-7 bg-[var(--color-surface-container)] border-b lg:border-b-0 lg:border-r border-[var(--color-surface-variant)] p-[var(--spacing-md)] flex flex-col justify-between">
-                <div className="relative w-full h-[400px] md:h-[500px] bg-white border border-[var(--color-surface-variant)] overflow-hidden">
-                  <MachineImage
-                    product={product}
-                    className="w-full h-full bg-white"
-                    imgClassName="w-full h-full object-contain p-4"
-                  />
-
-                </div>
-
-                {/* Gallery thumbnails if available */}
-                {galleryImages.length > 0 && (
-                  <div className="mt-4 grid grid-cols-4 gap-2">
-                    {galleryImages.map((img, idx) => (
-                      <div
-                        key={idx}
-                        className="aspect-square bg-white border border-[var(--color-surface-variant)] overflow-hidden flex items-center justify-center p-1"
-                      >
-                        <img
-                          src={img}
-                          alt={`${product.name} detail view ${idx + 1}`}
-                          className="w-full h-full object-contain"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between pt-[var(--spacing-sm)]">
-                  <span className="font-label-technical text-[var(--color-secondary)] uppercase">
-                    PRECISION FABRICATION: TIRUPUR FACILITY
-                  </span>
-                  <span className="font-label-technical text-[var(--color-primary)] uppercase">
-                    100% PRE-DISPATCH TRIAL RUN
-                  </span>
-                </div>
-              </div>
+              {/* Product Imagery — Video + Gallery Viewer */}
+              <ProductMediaViewer
+                product={product}
+                viewportHeightClass="h-[400px] md:h-[500px]"
+                footnoteLeft="PRECISION FABRICATION: TIRUPUR FACILITY"
+                footnoteRight="100% PRE-DISPATCH TRIAL RUN"
+              />
 
               {/* Product Specifications & Details */}
               <div className="lg:col-span-5 p-[var(--spacing-lg)] flex flex-col justify-between bg-[var(--color-surface-container-lowest)]">
