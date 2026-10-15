@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useMemo } from 'react';
 import type { Product } from '@/types/product';
 import MachineImage from '@/components/ui/MachineImage';
 import { getMachineImage, getMachineGallery } from '@/utils/imageResolver';
-import { getMachineVideo } from '@/data/videos';
+import { getMachineVideos } from '@/data/videos';
 
 export interface ProductMediaViewerProps {
   product: Product;
@@ -12,13 +12,18 @@ export interface ProductMediaViewerProps {
   className?: string;
 }
 
+type ActiveMedia =
+  | { type: 'video'; index: number }
+  | { type: 'image'; index: number };
+
 /**
  * Interactive Media Viewer (Machine Video + Image Gallery)
  *
  * Displays machine video by default if available (with autoplay, loop, muted, controls).
- * Displays mini image thumbnails at the bottom (video thumbnail + photos).
- * Clicking any secondary thumbnail switches the main viewport to that photo.
- * Clicking the video thumbnail switches back to the video.
+ * Supports single or multiple videos per machine.
+ * Displays mini image thumbnails at the bottom (video thumbnails + photos).
+ * Clicking any secondary image thumbnail switches the main viewport to that photo.
+ * Clicking any video thumbnail switches back to that video.
  */
 export default function ProductMediaViewer({
   product,
@@ -28,7 +33,7 @@ export default function ProductMediaViewer({
   className = '',
 }: ProductMediaViewerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const videoUrl = getMachineVideo(product.slug);
+  const videos = getMachineVideos(product.slug);
   const mainImage = getMachineImage(product.category, product.slug);
   const galleryImages = getMachineGallery(product.category, product.slug);
 
@@ -40,28 +45,37 @@ export default function ProductMediaViewer({
     return imgs;
   }, [mainImage, galleryImages]);
 
-  // 'video' = showing video, or numeric index into allImages
-  const [activeMedia, setActiveMedia] = useState<'video' | number>(
-    videoUrl ? 'video' : 0
+  // Active media state: video (by index) or image (by index)
+  const [activeMedia, setActiveMedia] = useState<ActiveMedia>(() =>
+    videos.length > 0
+      ? { type: 'video', index: 0 }
+      : { type: 'image', index: 0 }
   );
 
-  // Reset to video (if available) or first image whenever product changes
+  // Reset to first video (if available) or first image whenever product changes
   useEffect(() => {
-    setActiveMedia(videoUrl ? 'video' : 0);
-  }, [product.slug, videoUrl]);
+    setActiveMedia(
+      videos.length > 0
+        ? { type: 'video', index: 0 }
+        : { type: 'image', index: 0 }
+    );
+  }, [product.slug, videos.length]);
 
-  // Ensure video plays when switching back to video view
+  const activeVideoUrl =
+    activeMedia.type === 'video' ? videos[activeMedia.index] : undefined;
+
+  // Ensure video plays when switching back to video view or changing videos
   useEffect(() => {
-    if (activeMedia === 'video' && videoRef.current) {
+    if (activeMedia.type === 'video' && videoRef.current) {
       videoRef.current.currentTime = 0;
       videoRef.current.play().catch(() => {
         // Handle browser autoplay policy gracefully
       });
     }
-  }, [activeMedia, videoUrl]);
+  }, [activeMedia, activeVideoUrl]);
 
-  // Show thumbnails if there is a video OR more than 1 image
-  const showThumbnails = Boolean(videoUrl || allImages.length > 1);
+  // Show thumbnails if there is at least 1 video OR multiple images
+  const showThumbnails = Boolean(videos.length > 0 || allImages.length > 1);
 
   return (
     <div
@@ -71,11 +85,11 @@ export default function ProductMediaViewer({
       <div
         className={`relative w-full ${viewportHeightClass} bg-white border border-[var(--color-surface-variant)] overflow-hidden flex items-center justify-center`}
       >
-        {activeMedia === 'video' && videoUrl ? (
+        {activeMedia.type === 'video' && activeVideoUrl ? (
           <video
             ref={videoRef}
-            key={videoUrl}
-            src={videoUrl}
+            key={activeVideoUrl}
+            src={activeVideoUrl}
             autoPlay
             loop
             muted
@@ -83,10 +97,10 @@ export default function ProductMediaViewer({
             playsInline
             className="w-full h-full object-contain bg-black"
           />
-        ) : typeof activeMedia === 'number' && allImages[activeMedia] ? (
+        ) : activeMedia.type === 'image' && allImages[activeMedia.index] ? (
           <img
-            src={allImages[activeMedia]}
-            alt={`${product.name} — view ${activeMedia + 1}`}
+            src={allImages[activeMedia.index]}
+            alt={`${product.name} — view ${activeMedia.index + 1}`}
             className="w-full h-full object-contain p-4"
           />
         ) : (
@@ -101,60 +115,70 @@ export default function ProductMediaViewer({
       {/* Thumbnail Strip */}
       {showThumbnails && (
         <div className="mt-4 flex flex-wrap gap-2">
-          {/* Video thumbnail button (if machine has video) */}
-          {videoUrl && (
-            <button
-              type="button"
-              onClick={() => setActiveMedia('video')}
-              className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-black border-2 overflow-hidden flex items-center justify-center transition-all flex-shrink-0 cursor-pointer ${
-                activeMedia === 'video'
-                  ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/30'
-                  : 'border-[var(--color-surface-variant)] hover:border-[var(--color-primary)]/50'
-              }`}
-              title="Play machine video"
-              aria-label="Play machine video"
-            >
-              {mainImage && (
-                <img
-                  src={mainImage}
-                  alt="Video thumbnail poster"
-                  className="w-full h-full object-contain p-1 opacity-60"
-                />
-              )}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[var(--color-primary)] flex items-center justify-center shadow-lg">
-                  <span className="material-symbols-outlined text-[18px] sm:text-[20px] text-white ml-0.5">
-                    play_arrow
-                  </span>
+          {/* Video thumbnail buttons (for each video) */}
+          {videos.map((vidUrl, vIdx) => {
+            const isActive =
+              activeMedia.type === 'video' && activeMedia.index === vIdx;
+            const label = videos.length > 1 ? `Video ${vIdx + 1}` : 'Video';
+            return (
+              <button
+                type="button"
+                key={`video-${vIdx}-${vidUrl}`}
+                onClick={() => setActiveMedia({ type: 'video', index: vIdx })}
+                className={`relative w-16 h-16 sm:w-20 sm:h-20 bg-black border-2 overflow-hidden flex items-center justify-center transition-all flex-shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/30'
+                    : 'border-[var(--color-surface-variant)] hover:border-[var(--color-primary)]/50'
+                }`}
+                title={`Play ${label}`}
+                aria-label={`Play ${label}`}
+              >
+                {mainImage && (
+                  <img
+                    src={mainImage}
+                    alt={`${label} poster`}
+                    className="w-full h-full object-contain p-1 opacity-60"
+                  />
+                )}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[var(--color-primary)] flex items-center justify-center shadow-lg">
+                    <span className="material-symbols-outlined text-[18px] sm:text-[20px] text-white ml-0.5">
+                      play_arrow
+                    </span>
+                  </div>
                 </div>
-              </div>
-              <span className="absolute bottom-0.5 left-0.5 right-0.5 text-center font-label-badge text-[8px] sm:text-[9px] uppercase tracking-wider text-white bg-black/75 px-1 py-0.5">
-                Video
-              </span>
-            </button>
-          )}
+                <span className="absolute bottom-0.5 left-0.5 right-0.5 text-center font-label-badge text-[8px] sm:text-[9px] uppercase tracking-wider text-white bg-black/75 px-1 py-0.5 truncate">
+                  {label}
+                </span>
+              </button>
+            );
+          })}
 
           {/* Image thumbnails */}
-          {allImages.map((img, idx) => (
-            <button
-              type="button"
-              key={idx}
-              onClick={() => setActiveMedia(idx)}
-              className={`w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 overflow-hidden flex items-center justify-center p-1 transition-all flex-shrink-0 cursor-pointer ${
-                activeMedia === idx
-                  ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/30'
-                  : 'border-[var(--color-surface-variant)] hover:border-[var(--color-primary)]/50'
-              }`}
-              title={`View image ${idx + 1}`}
-              aria-label={`View image ${idx + 1}`}
-            >
-              <img
-                src={img}
-                alt={`${product.name} — thumbnail ${idx + 1}`}
-                className="w-full h-full object-contain"
-              />
-            </button>
-          ))}
+          {allImages.map((img, idx) => {
+            const isActive =
+              activeMedia.type === 'image' && activeMedia.index === idx;
+            return (
+              <button
+                type="button"
+                key={`img-${idx}`}
+                onClick={() => setActiveMedia({ type: 'image', index: idx })}
+                className={`w-16 h-16 sm:w-20 sm:h-20 bg-white border-2 overflow-hidden flex items-center justify-center p-1 transition-all flex-shrink-0 cursor-pointer ${
+                  isActive
+                    ? 'border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/30'
+                    : 'border-[var(--color-surface-variant)] hover:border-[var(--color-primary)]/50'
+                }`}
+                title={`View image ${idx + 1}`}
+                aria-label={`View image ${idx + 1}`}
+              >
+                <img
+                  src={img}
+                  alt={`${product.name} — thumbnail ${idx + 1}`}
+                  className="w-full h-full object-contain"
+                />
+              </button>
+            );
+          })}
         </div>
       )}
 

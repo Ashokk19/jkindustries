@@ -34,27 +34,6 @@ export default function Header() {
   return (
     <>
       <header className="fixed top-0 left-0 w-full z-50 bg-[var(--color-surface-container-lowest)] border-b border-[var(--color-surface-variant)]">
-        {/* Top technical info strip */}
-        <div className="w-full bg-[var(--color-surface-container-low)] border-b border-[var(--color-surface-variant)]">
-          <div className="max-w-7xl mx-auto px-[var(--spacing-gutter)] flex items-center justify-between py-1">
-            <div className="flex items-center gap-2">
-              <span className="inline-block w-1.5 h-1.5 bg-[var(--color-primary-container)]" />
-              <span className="font-label-technical text-[var(--color-secondary)] tracking-widest uppercase">
-                MANUFACTURING UNIT: TIRUPUR, TAMIL NADU | INDUSTRIAL AUTOMATION &amp; CONVERTING MACHINERY
-              </span>
-            </div>
-            <div className="hidden md:flex items-center gap-4">
-              <span className="font-label-technical text-[var(--color-secondary)] uppercase">
-                PRECISION SPEC: ISO COMPLIANT CELL
-              </span>
-              <span className="text-[var(--color-outline-variant)]">|</span>
-              <span className="font-label-technical text-[var(--color-secondary)] uppercase">
-                EST. INDUSTRIAL CORRIDOR
-              </span>
-            </div>
-          </div>
-        </div>
-
         {/* Main navigation bar */}
         <div className="h-20 max-w-7xl mx-auto px-[var(--spacing-gutter)] flex items-center justify-between">
           {/* Logo */}

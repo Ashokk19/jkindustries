@@ -28,7 +28,7 @@ export default function App() {
       <ScrollToTop />
       <div className="flex flex-col min-h-screen bg-[var(--color-background)]">
         <Header />
-        <main className="flex-1 w-full pt-28">
+        <main className="flex-1 w-full pt-20">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/products" element={<Products />} />
