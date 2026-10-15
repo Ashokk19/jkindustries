@@ -119,9 +119,22 @@
     border-radius: 0 !important;
   }
 
-  /* Exception: only the admin user avatar gets rounded */
+  /* Exceptions for specific circular/oval elements */
   .avatar-circle {
     border-radius: 9999px !important;
+  }
+
+  .oval-map-frame {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    transform: translateZ(0);
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+  }
+
+  @media (min-width: 640px) {
+    .oval-map-frame {
+      border-radius: 50% !important;
+    }
   }
 }
 

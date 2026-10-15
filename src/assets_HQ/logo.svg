@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 48" fill="none">
+  <rect x="0" y="4" width="40" height="40" rx="4" fill="#172222"/>
+  <path d="M12 12V24C12 28.5 15.5 32 20 32C24.5 32 28 28.5 28 24V12" stroke="#38B7AD" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M28 22L34 16M28 22L34 28" stroke="#38B7AD" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="20" cy="18" r="2.5" fill="#38B7AD"/>
+  <text x="50" y="27" font-family="'Manrope', 'Inter', sans-serif" font-size="19" font-weight="800" fill="#172222" letter-spacing="0.5">J.K. INDUSTRIES</text>
+  <text x="50" y="39" font-family="'Manrope', 'Inter', sans-serif" font-size="9" font-weight="600" fill="#5E6B6B" letter-spacing="2.2">AUTOMATION &amp; MACHINERY</text>
+</svg>

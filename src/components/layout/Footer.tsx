@@ -1,26 +1,17 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { productService } from '@/services/productService';
-import type { Product } from '@/types/product';
 import jkLogo from '@/assets/JK_Logo.png';
 
+const MAP_QUERY = 'J.K. Industries, No 33/2, A.V.P. Road, Anuparpalayam, Tiruppur, Tamil Nadu 641652';
+const GOOGLE_MAPS_EMBED_URL = `https://maps.google.com/maps?q=${encodeURIComponent(MAP_QUERY)}&t=&z=16&ie=UTF8&iwloc=&output=embed`;
+const GOOGLE_MAPS_DIRECT_URL = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(MAP_QUERY)}`;
+
 export default function Footer() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    productService.getProducts().then(setProducts);
-  }, []);
-
-  const automatic = products.filter((p) => p.category === 'automatic');
-  const manual = products.filter((p) => p.category === 'manual');
-
   return (
     <footer className="w-full bg-[var(--color-surface-container-lowest)] border-t border-[var(--color-surface-variant)]">
       <div className="max-w-7xl mx-auto px-[var(--spacing-gutter)] py-[var(--spacing-xl)]">
-        {/* Main footer grid */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-[var(--spacing-gutter)] pb-[var(--spacing-lg)] border-b border-[var(--color-surface-variant)]">
-          {/* Company info */}
-          <div className="md:col-span-4 flex flex-col">
+        {/* Main footer grid: 45-50% left contact details, 50-55% right map section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[46%_1fr] gap-8 xl:gap-12 pb-[var(--spacing-lg)] border-b border-[var(--color-surface-variant)] items-center">
+          {/* Company & Contact Info (Left Column: ~46-50%) */}
+          <div className="w-full flex flex-col justify-center">
             <div className="flex items-center gap-3 mb-[var(--spacing-sm)]">
               <img src={jkLogo} alt="J.K. Industries Logo" className="h-10 w-auto object-contain" />
               <span className="font-headline-sm font-bold uppercase tracking-tight text-[var(--color-on-surface)]">
@@ -38,7 +29,7 @@ export default function Footer() {
                 No 33/2, A.V.P. Road, Anuparpalayam,<br />Tiruppur, Tamil Nadu, 641652, India
               </span>
             </div>
-            <div className="bg-[var(--color-surface-container-low)] p-[var(--spacing-sm)] border border-[var(--color-surface-variant)] mb-[var(--spacing-sm)]">
+            <div className="bg-[var(--color-surface-container-low)] p-[var(--spacing-sm)] border border-[var(--color-surface-variant)]">
               <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
                 Contact
               </span>
@@ -51,55 +42,37 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Index & Corporate links */}
-          <div className="md:col-span-2 flex flex-col">
-            <span className="font-label-technical text-[var(--color-secondary)] uppercase tracking-wider mb-[var(--spacing-md)]">
-              Index &amp; Corporate
-            </span>
-            <ul className="flex flex-col space-y-2">
-              <li><Link to="/" className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors">Home</Link></li>
-              <li><Link to="/products" className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors">Machinery Catalogue</Link></li>
-              <li><Link to="/about" className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors">About Works</Link></li>
-              <li><Link to="/contact" className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors">Engineering Enquiries</Link></li>
-            </ul>
-          </div>
+          {/* Google Maps Section (Right Column: balanced with left contact block) */}
+          <div className="w-full flex flex-col justify-center items-center">
+            {/* Header neatly positioned above map, aligned with map left edge */}
+            <div className="w-full max-w-[380px] flex items-center gap-2 mb-2 px-1">
+              <span className="w-2 h-2 bg-[#38B7AD]" />
+              <span className="font-label-technical text-[var(--color-primary)] uppercase tracking-wider text-xs font-semibold">
+                PLANT LOCATION // TIRUPPUR
+              </span>
+            </div>
 
-          {/* Automatic Line Machinery */}
-          <div className="md:col-span-3 flex flex-col">
-            <span className="font-label-technical text-[var(--color-secondary)] uppercase tracking-wider mb-[var(--spacing-md)]">
-              Automatic Line Machinery
-            </span>
-            <ul className="flex flex-col space-y-2">
-              {automatic.map((p) => (
-                <li key={p.id}>
-                  <Link
-                    to={`/products/${p.slug}`}
-                    className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
-                  >
-                    {p.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Converting & Manual Units */}
-          <div className="md:col-span-3 flex flex-col">
-            <span className="font-label-technical text-[var(--color-secondary)] uppercase tracking-wider mb-[var(--spacing-md)]">
-              Converting &amp; Manual Units
-            </span>
-            <ul className="flex flex-col space-y-2">
-              {manual.map((p) => (
-                <li key={p.id}>
-                  <Link
-                    to={`/products/${p.slug}`}
-                    className="font-body-sm text-[var(--color-on-surface-variant)] hover:text-[var(--color-on-surface)] transition-colors"
-                  >
-                    {p.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            {/* Compact rounded-oval container matching left column height (~290px) */}
+            <a
+              href={GOOGLE_MAPS_DIRECT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative block w-full max-w-[380px] oval-map-frame border border-[#38B7AD] bg-[var(--color-surface-container-highest)] shadow-xs transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-[#38B7AD] focus:ring-offset-2 cursor-pointer"
+              style={{
+                aspectRatio: '1.3 / 1',
+                maxHeight: '300px',
+              }}
+              aria-label="View J.K. Industries manufacturing facility location in Google Maps (opens in new tab)"
+            >
+              <iframe
+                title="Google Maps location of J.K. Industries manufacturing facility in Tiruppur"
+                src={GOOGLE_MAPS_EMBED_URL}
+                className="w-full h-full pointer-events-none"
+                style={{ width: '100%', height: '100%', border: 0 }}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </a>
           </div>
         </div>
 

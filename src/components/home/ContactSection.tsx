@@ -121,6 +121,11 @@ export default function ContactSection() {
                   No 33/2, A.V.P. Road, Anuparpalayam,<br />
                   Tiruppur, Tamil Nadu, 641652
                 </p>
+                <div className="mt-2.5 pt-2 border-t border-[var(--color-surface-variant)] flex items-center justify-between flex-wrap gap-1">
+                  <span className="font-label-technical text-[var(--color-secondary)] uppercase text-xs">
+                    GSTIN: 33CMCPJ4645QIZO
+                  </span>
+                </div>
                 <div className="mt-3 pt-2 bg-[var(--color-surface-container-low)] p-2 border-t border-[var(--color-surface-variant)]">
                   <span className="font-label-technical text-[var(--color-secondary)] block uppercase">
                     OFFICIAL COMMUNICATION:
